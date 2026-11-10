@@ -9,6 +9,7 @@ import AlertCard, { type Alert } from "./AlertCard";
 import InviteCard from "./InviteCard";
 import { isPushConfigured } from "@/lib/firebase/config";
 import NotificationsButton from "./NotificationsButton";
+import CallNowButton from "./CallNowButton";
 import { MOOD_COLORS, MoodFace, MoodGlyph, moodLevel } from "./MoodFace";
 import { Avatar, Screen, TabBar } from "./ui";
 
@@ -88,6 +89,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [me, setMe] = useState("");
   const [memberId, setMemberId] = useState("");
+  const [seniorId, setSeniorId] = useState("");
   const [seniorName, setSeniorName] = useState("");
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -138,6 +140,7 @@ export default function Dashboard() {
     queueMicrotask(() => {
       setMe(s.name ?? "");
       setMemberId(s.member_id);
+      setSeniorId(s.senior_id);
     });
     let db: ReturnType<typeof supabaseBrowser>;
     try {
@@ -186,6 +189,8 @@ export default function Dashboard() {
       <div className="mt-6 space-y-4">
         {/* Hidden until Firebase is set up, so a missing setting never breaks the page. */}
         {isPushConfigured() && <NotificationsButton memberId={memberId || null} />}
+
+        {seniorId && memberId && <CallNowButton seniorId={seniorId} memberId={memberId} name={sName} />}
 
         {alerts.length > 0 && (
           <section aria-label="Alerts" className="space-y-3">

@@ -14,7 +14,7 @@
 | `POST /api/push/register` | v1 | Stores a member's FCM token |
 | `POST /api/push/test` | v1 | Sends a test push to the current member (FCM hello world) |
 | `POST /api/call-requests/[id]/accept` | v2 | Member claims a request; triggers scheduling of the next slot |
-| `POST /api/hope/call-now` | v1 | On-demand outbound Hope call (demo trigger) |
+| `POST /api/hope/call-now` | v1 | "Call now" on the dashboard. Body `{ senior_id, member_id }`; the member must belong to that elder (403 otherwise). One call per elder per 5 minutes, claimed through `seniors.last_call_requested_at` (429 with `Retry-After`). 503 when `VAPI_API_KEY`, `VAPI_ASSISTANT_ID` or `VAPI_PHONE_NUMBER_ID` is missing |
 | `POST /api/link/lookup` | v2 | Finds the elder by phone number; returns only the first name |
 | `POST /api/link/join` | v2 | Creates or reconnects a family member for that elder |
 | `POST /api/link/elders` | v2 | Demo-only: creates a new elder. See [family-linking](../07-onboarding/family-linking.md) |
